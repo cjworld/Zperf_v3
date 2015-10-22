@@ -410,7 +410,155 @@ class FreeBSDServer(FreeBSDDevice, protocols.NfsServer, protocols.IscsiServer):
         if iqn and lun:
             self.cmd('/nas/util/scst/scstadm del_lun -d iscsi -t %s -l %s' % (iqn, lun))
     
-    
+'''
+class LinuxClient(Device, NfsClient, CifsClient, IscsiClient):
+
+	def mount_cifs_share(self, **kwargs):
+		"""
+			Mount the cifs share on the linux
+
+			Args:
+				share_path: ' //192.168.10.1/esshare'
+				mount_point: '/mnt/esshare'
+		"""
+		mount_point = kwargs.get('mount_point')
+		share_path = kwargs.get('share_path')
+		username = kwargs.get('username')
+		password = kwargs.get('password')
+		if mount_point and share_path:
+			if username and password:
+				command = 'mount -t cifs %s %s -o username=%s,password=%s' % (share_path, mount_point, username, password)
+				self.cmd(command)
+
+	def umount_cifs_share(self, **kwargs):
+		"""
+			Unmount the cifs-shared drive on the Linux
+
+			Args:
+				mount_point: '/mnt/esshare'
+		"""
+		mount_point = kwargs.get('mount_point')
+		if mount_point:
+			command = 'umount %s' % (mount_point)
+			self.cmd(command)
+
+	def mount_nfs_share(self, share_config):
+		"""
+			Mount the nfs share on the linux
+
+			Args:
+				share_config: dictionary
+					remote_host: 'news'
+					remote_dir: '/var/spool/news'
+					mount_point: '/var/spool/news'
+		"""
+		remote_host = share_config.get('remote_host')
+		remote_dir = share_config.get('remote_dir')
+		mount_point = share_config.get('mount_point')
+		if remote_host and remote_dir:
+			if mount_point:
+				command = 'mount -t nfs %s:%s %s' % (remote_host, remote_dir, mount_point)
+				self.cmd(command)
+
+	def umount_nfs_share(self, share_config):
+		"""
+			Unmount the nfs share on the Linux
+
+			Args:
+				share_config: dictionary
+					mount_point: '/mnt/esshare'
+		"""
+		mount_point = share_config.get('mount_point')
+		if mount_point:
+			command = 'umount %s' % (mount_point)
+			self.cmd(command)
+
+	def enable_iscsi_service(self):
+		"""
+			Enable iscsi-related service
+		"""
+		put('multipath.conf','/etc/multipath.conf')
+
+		command = 'service multipathd start'
+		self.cmd(command)
+
+		command = 'multipath -v2'
+		self.cmd(command)
+
+	def disable_iscsi_service(self):
+		"""
+			Disable iscsi-related service
+		"""
+		command = 'service multipathd stop'
+		self.cmd(command)
+
+	def add_iscsi_target_portal(self, portal_config):
+		"""
+			Add an iSCSI target portal
+
+			Args:
+				portal_config: dictionary
+					'ip': the ip of the iscsi target portal
+					'port' the port of the iscsi target portal
+		"""
+		ip = portal_config.get('ip')
+		port = portal_config.get('port')
+		if ip and port:
+			command = 'iscsiadm -m discovery -t sendtargets -p %s:%s' % (ip, port)
+			self.cmd(command)
+
+	def remove_iscsi_target_portal(self, portal_config):
+		"""
+			Remove an iSCSI target portal
+
+			Args:
+				portal_config: dictionary
+					'ip': the ip of the iscsi target portal
+					'port' the port of the iscsi target portal
+		"""
+		ip = portal_config.get('ip')
+		port = portal_config.get('port')
+		if ip and port:
+			command = 'iscsicli RemoveTargetPortal %s %s' % (ip, port)
+			self.cmd(command)
+
+	def login_iscsi_target(self, portal_config, target_config):
+		"""
+			Login an iSCSI target
+
+			Args:
+				portal_config: dictionary
+					'ip': the ip of the iscsi target portal
+					'port' the port of the iscsi target portal
+				target_config: dictionary
+					'iqn': the iqn of the iscsi target
+		"""
+		ip = portal_config.get('ip')
+		port = portal_config.get('port')
+		iqn = target_config.get('iqn')
+		if ip and port and iqn:
+			command = 'iscsiadm -m node -l -T %s -p %s:%d' % (iqn, ip, port)
+			self.cmd(command)
+
+	def logout_iscsi_target(self, portal_config, target_config):
+		"""
+			Logout an iSCSI target
+
+			Args:
+				portal_config: dictionary
+					'ip': the ip of the iscsi target portal
+					'port' the port of the iscsi target portal
+				target_config: dictionary
+					'iqn': the iqn of the iscsi target
+		"""
+		ip = portal_config.get('ip')
+		port = portal_config.get('port')
+		iqn = target_config.get('iqn')
+		if ip and port and iqn:
+			command = 'iscsiadm -m node -u -T %s -p %s:%d' % (iqn, ip, port)
+			self.cmd(command)
+'''
+
 class WindowsClient(WindowsDevice, protocols.NfsClient, protocols.IscsiClient, protocols.CifsClient):
 
     def mount_cifs_share(self, share_config):
