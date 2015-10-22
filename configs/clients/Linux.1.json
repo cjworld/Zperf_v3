@@ -1,0 +1,25 @@
+{
+    "os": "Windows",
+    "ip": "10.77.5.26",
+    "port": 22,
+    "username": "root",
+    "password": "Qnap@1234",
+    "network": {
+        "nics": [
+            {
+                "name": "enp26s0f0",
+                "ip": "192.168.10.2",
+                "netmask": "255.255.255.0",
+                "driver": "enp26s0f",
+                "driver_index": 0
+            },
+            {
+                "name": "enp26s0f1",
+                "ip": "192.168.20.2",
+                "netmask": "255.255.255.0",
+                "driver": "enp26s0f",
+                "driver_index": 1
+            }
+        ]
+    }
+}

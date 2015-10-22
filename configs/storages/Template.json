@@ -1,0 +1,44 @@
+{
+    "pools": [
+        {
+            "pool_name": "testpool",
+            "disks": [
+                "h.5",
+                "h.6",
+                "h.7",
+                "h.8"
+            ],
+            "raid_level": "mirror",
+            "globalcache": [
+                "h.4"
+            ],
+            "volumes": [
+                {
+                    "zvol": {
+                        "name": "testpool/lun1",
+                        "b": "64k",
+                        "V": "100g",
+                        "o": {
+                            "sync": "always",
+                            "encryption": "on",
+                            "compression": "on",
+                            "dedup": "on",
+                            "keysource": "/etc/passwd"
+                        }
+                    },
+                    "zfs": {
+                        "name": "testpool/z1",
+                        "o": {
+                            "recordsize": "128k",
+                            "mountpoint": "/mnt/zperfpool",
+                            "encryption": "on",
+                            "compression": "on",
+                            "dedup": "on",
+                            "keysource": "/etc/passwd"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

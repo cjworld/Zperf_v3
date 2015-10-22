@@ -1,0 +1,11 @@
+{
+    "os": "Windows",
+    "ip": "10.77.5.26",
+    "port": 22,
+    "username": "root",
+    "password": "Qnap@1234",
+    "network": {
+        "nics": [
+        ]
+    }
+}

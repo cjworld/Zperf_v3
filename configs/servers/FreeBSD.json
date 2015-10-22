@@ -1,0 +1,25 @@
+{
+    "os": "FreeBSD",
+    "ip": "10.77.157.101",
+    "port": 22,
+    "username": "root",
+    "password": "qq",
+    "network": {
+        "nics": [
+            {
+                "name": "ix0",
+                "ip": "192.168.10.1",
+                "netmask": "255.255.255.0",
+                "driver": "ix",
+                "driver_index": 0
+            },
+            {
+                "name": "ix1",
+                "ip": "192.168.20.1",
+                "netmask": "255.255.255.0",
+                "driver": "ix",
+                "driver_index": 1
+            }
+        ]
+    }
+}

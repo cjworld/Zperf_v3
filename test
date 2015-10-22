@@ -1,0 +1,110 @@
+
+
+
+class TestJob():
+	def __init__(self):
+		self._protocol = 
+		self._client = 
+		self._server = 
+		self._env_config = 
+		self._fio_config = 
+		self._fw_version =
+
+	def setup_env():
+		srv.config_preprocess()
+		srv.srv_set_env()
+		srv.service_enable()
+		clt.clt_connect()
+
+	def connect():
+
+	def disconnect():
+
+	def clean_env():
+		clt.clt_close()
+		srv.service_stop()
+		srv.srv_destroy_zpool()
+
+	def run():
+		self.fio_exec(j,prot_type,save_result)
+
+
+available_protocols = ['local', 'iscsi', 'nfs', 'samba']
+available_env_config = []
+available_fio_config = []
+available_firmwares = []
+adjustable_configurations = [
+('protocol', available_protocols),
+('env_config', available_env_config),
+('fio_config', available_fio_config),
+('firmware', available_firmwares)]
+
+def test_exec(fw_ver, fio_config, env_config, protocol, save_result, debug_id):
+
+	task = zperf()
+	task.switch_fwver()
+	task.env_prepare()
+
+	'''
+	if debug_id:
+		print (green('[DEBUG MODE]Execute setting:env_num=%d fio_num=%d debug_id=%s'%(i,j,debug_id),bold=True))
+	elif save_result:
+		print (green('[RELEASE MODE]Execute setting:env_num=%d fio_num=%d save_result=%s'%(i,j,save_result),bold=True))
+	else:
+		print (green('[DEBUG MODE]Execute setting:env_num=%d fio_num=%d'%(i,j),bold=True))
+	self._dbrecord.load(i,j)
+	'''
+
+	srv = server(prot_type, self._dbrecord, self._dbconf)
+	clt = client(prot_type, self._dbrecord, self._dbconf)
+
+	task.setup_env()
+	task.run()
+	'''
+	#print self._dbrecord.get_totalconf()
+	self._dbrecord.trim(prot_type)
+	if save_result:
+		self.update_dbrecord(debug_id)
+	'''
+
+	task.clean_env()
+
+def main(argv):
+
+	# For every configurations which is adjustable, list possible values 
+	# and ask users for the values they want
+	selected_configurations = {}
+	for configuration in adjustable_configurations:
+		configuration_key = configuration[0]
+		configuration_options = configuration[1]
+
+		print 'Available %ss:' % (configuration_name)
+		for option_idx, option in enumerate(configuration_options):
+			print '%d. %s' % (option_idx, option)
+		answer = raw_input('Please select (seperate with comma):')
+		if answer:
+			selected_options_idx = [int(idx_str.strip()) for idx_str in answer.split(,)]
+			selected_options = [configuration_options[idx] for idx in selected_options_idx]
+		else:
+			selected_options = configuration_options
+
+		selected_configurations[configuration_name] = selected_options
+
+
+	save = raw_input("Store result in database?(y/n):(default:y)")
+	save_result = False if save in ['n','N'] else True
+
+	#get debug id
+	if save_result:
+		ret = zperf_api.get_debug_number()
+		debug_id = int(ret[1].strip('[]'))
+	else:
+		debug_id = 0
+
+
+	# Execute tasks which are genereated based on the requests just asked.
+	for fw_ver in selected_configurations['firmware']:
+		for fio_config in selected_configurations['fio_config']:
+			for env_config in selected_configurations['env_config']:
+				for protocol in selected_configurations['protocol']:
+					test_exec(fw_ver, fio_config, env_config, protoco, save_result, debug_id)

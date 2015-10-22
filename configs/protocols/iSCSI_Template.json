@@ -1,0 +1,57 @@
+{
+    "protocol": "iscsi",
+    "server": {
+        "devices": [
+            {
+                "file_path": "/dev/zvol/testpool/lun1",
+                "device_name": "lun1"
+            }
+        ],
+        "targets": [
+            {
+                "iqn": "iqn.zperftarget",
+                "portals": [
+                    {
+                        "ip": "192.168.10.1"
+                    },
+                    {
+                        "ip": "192.168.20.1"
+                    }
+                ],
+                "acls": [
+                    {
+                        "domain": "192.168.0.0/16"
+                    }
+                ],
+                "luns": [
+                    {
+                        "lun": "1",
+                        "device_name": "lun1"
+                    }
+                ]
+            }
+        ]
+    },
+    "client": {
+        "portals": [
+            {
+                "ip": "192.168.10.1",
+                "port": 3260,
+                "targets": [
+                    {
+                        "iqn": "iqn.zperftarget"
+                    }
+                ]
+            },
+            {
+                "ip": "192.168.20.1",
+                "port": 3260,
+                "targets": [
+                    {
+                        "iqn": "iqn.zperftarget"
+                    }
+                ]
+            }
+        ]
+    }
+}

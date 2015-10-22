@@ -1,0 +1,23 @@
+{
+    "protocol": "nfs",
+    "server": {
+        "exports": [
+            {
+                "directory": "/mnt/zperfpool",
+                "hosts": [
+                    "192.168.10.0/24"
+                ]
+            }
+        ]
+    },
+    "client": {
+        "shares": [
+            {
+                "remote_host": "192.168.10.1",
+                "remote_dir": "/mnt/zperfpool",
+                "drive_letter": "W",
+                "mount_point": "/mnt/zperfpool"
+            }
+        ]
+    }
+}
