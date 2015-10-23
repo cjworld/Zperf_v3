@@ -1,6 +1,5 @@
 import os
 import json
-import device
 
 available_items = [
     {
@@ -56,7 +55,7 @@ def execute_task(task_args):
     task.cleanup_task_env()
 
 
-if __name__ == '__main__':
+def lalalala():
 
     options = {}
     for item_config in available_items:
@@ -81,3 +80,17 @@ if __name__ == '__main__':
 
     execute_task(options)
     print '[ENDING]'
+
+
+if __name__ == "__main__":
+    '''
+    with open('./configs/clients/Windows.json', 'r') as fp_win:
+        cli_cfg = json.load(fp_win)
+        cli_ip = cli_cfg.get('ip')
+        cli_port = cli_cfg.get('port')
+        client = xmlrpclib.ServerProxy('http://%s:%d' % (cli_ip, cli_port))
+    '''
+    from pkg import devices
+
+    a = devices.WIndows.WindowsDevice()
+

@@ -1,0 +1,21 @@
+{
+    "protocol": "cifs",
+    "server": {
+        "shares": [
+            {
+                "name": "testdir",
+                "path": "/testdir"
+            }
+        ]
+    },
+    "client": {
+        "shares": [
+            {
+                "remote_host": "10.77.157.102",
+                "share_name": "testdir",
+                "drive_letter": "W",
+                "mount_point": "/mnt/zperfpool"
+            }
+        ]
+    }
+}

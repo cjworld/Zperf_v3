@@ -1,32 +1,34 @@
 import os
-import protocols
+
 import fabric.api
 
-    
+import protocols
+
+
 class Device(object):
     def __init__(self, host=None, port=None, usr=None, pwd=None):
         self._host = host
         self._port = port
-        self._usr = usr 
+        self._usr = usr
         self._pwd = pwd
-    
+
     def chmod(self, path, mode):
         if os.path.exists(path):
             #os.chmod(path, mode)
             self.cmd("chmod %s %s" % (mode, path))
-    
+
     def rmdir(self, dir_path):
         if os.path.isdir(dir_path):
             os.rmdir(dir_path)
-    
+
     def makedir(self, dir_path, **kwargs):
         if not os.path.isdir(dir_path):
             #os.mkdir(dir_path)
             self.cmd("mkdir %s" % dir_path)
-    
+
     def put(self, src_file_path, dst_file_path):
         pass
-    
+
     def reboot(self, wait=720):
         pass
     
@@ -43,13 +45,13 @@ class Device(object):
         host = '%s@%s' % (self._usr, self._host)
         with fabric.api.settings(host_string=host, password=self._pwd):
             return fabric.api.run(command, shell=False, timeout=30, quiet=True)
-    
+
     def setup_storage(self, storage_config, filesystem):
         pass
-        
+
     def cleanup_storage(self, storage_config, filesystem):
         pass
-    
+
     
 class LinuxDevice(Device):
     
@@ -67,14 +69,14 @@ class LinuxDevice(Device):
     
     
 class WindowsDevice(Device):
-    
+
     def __init__(self, server_config):
         ip = server_config.get('ip')
         port = server_config.get('port')
         usr = server_config.get('username')
         pwd = server_config.get('password')
         super(WindowsDevice, self).__init__(host=ip, port=port, usr=usr, pwd=pwd)
-        
+
         self._network = server_config.get('network')
         nic_configs = self._network.get('nics') or []
         '''
@@ -82,11 +84,11 @@ class WindowsDevice(Device):
         for nic_config in nic_configs:
             self._setup_nic(nic_config)
         '''
-    
+
     def cmd(self, command):
         cmd_windows = 'cmd.exe /c %s' % command
         return super(WindowsDevice, self).cmd(cmd_windows)
-    
+
     
 class FreeBSDDevice(Device):
     
@@ -703,7 +705,6 @@ class WindowsClient(WindowsDevice, protocols.NfsClient, protocols.IscsiClient, p
 
 if __name__ == "__main__":
     import json
-    import task
 
     with open('./configs/servers/FreeBSD.json', 'r') as fp:
         srvcfg = json.load(fp)
